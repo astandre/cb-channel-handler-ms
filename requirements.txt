@@ -1,0 +1,7 @@
+-e git+https://github.com/Runnerly/flakon.git#egg=flakon
+pymongo
+flask
+flask_sqlalchemy
+sqlalchemy_utils
+requests
+cryptography
