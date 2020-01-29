@@ -2,9 +2,19 @@ language: python
 os: linux
 python: 3.7
 env:
- - TOX_ENV=py37
- - TOX_ENV=docs
+  - TOX_ENV=py37
+  - TOX_ENV=docs
 install:
- - pip install tox
+  - pip install tox
 script:
- - tox -e $TOX_ENV
+  - tox -e $TOX_ENV
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t kbsbot_channel_handler . -f docker/Dockerfile
+        - docker images
+        - docker tag kbsbot_channel_handler $DOCKER_USERNAME/kbsbot_channel_handler
+        - docker push $DOCKER_USERNAME/kbsbot_channel_handler
