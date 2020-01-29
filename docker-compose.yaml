@@ -1,0 +1,98 @@
+version: '3'
+
+################################################################
+#                Volumes                                       #
+################################################################
+
+volumes:
+  mongodb-interactions:
+
+
+################################################################
+#                Networks                                      #
+################################################################
+networks:
+  kbsbot-net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+
+  # #############################################################
+  # #                        Services                           #
+  # #############################################################
+services:
+  compose-engine:
+    restart: always
+    image: astandre/kbsbot_compose_engine
+    container_name: kbsbot_compose_engine
+    environment:
+      - NLP_ENGINE_URL=http://172.28.1.3:8001
+      - INTENTS_MANAGMENT_URL=http://172.28.1.4:8002
+      - CONTEXT_MANAGMENT_URL=http://0.0.0.0:8003
+    ports:
+      - "5000:8000"
+    networks:
+      kbsbot-net:
+        ipv4_address: 172.28.1.2
+
+  nlp-engine:
+    restart: always
+    image: astandre/kbsbot_nlpengine
+    container_name: kbsbot_nlpengine
+    ports:
+      - "5001:8001"
+    networks:
+      kbsbot-net:
+        ipv4_address: 172.28.1.3
+
+
+  intents-managment:
+    restart: always
+    image: astandre/kbsbot_intents_managment
+    container_name: kbsbot_intents_managment
+    ports:
+      - "5002:8002"
+    networks:
+      kbsbot-net:
+        ipv4_address: 172.28.1.4
+
+
+  channel-handler:
+    restart: always
+    image: astandre/kbsbot_channel_handler
+    container_name: kbsbot_channel_handler
+    environment:
+      - COMPOSE_ENGINE=http://172.28.1.2:8000
+      - MONGO_HOST=mongodb-interactions
+    ports:
+      - "5005:8005"
+    depends_on:
+      - mongodb-interactions
+      - compose-engine
+      links:
+        - mongodb-interactions
+        - compose-engine
+    networks:
+      kbsbot-net:
+        ipv4_address: 172.28.1.5
+
+      # ###############################################################
+      # #                         DATABASES                           #
+      # ###############################################################
+  mongodb-interactions:
+    image: 'mongo'
+    container_name: mongodb-interactions
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-interactions:/data/db/client
+    networks:
+      - kbsbot-net
+
+
+

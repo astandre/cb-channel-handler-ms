@@ -5,19 +5,39 @@ import os
 
 db = SQLAlchemy()
 
-# key = os.environ.get('KEY')
-key = "9WhoO2zEai7PveqOKEbatLobHCj45FLci6rtROxqpE4="
+key = os.environ.get('KEY')
+# key = "9WhoO2zEai7PveqOKEbatLobHCj45FLci6rtROxqpE4="
 
 
 class SocialNetwork(enum.Enum):
     twitter = 'twitter'
     telegram = 'telegram'
+    other = 'other'
+
+
+class Agent(db.Model):
+    """Agent
+
+    An Agent refers to the main o domain or purpose of the chatbot.
+
+    Attributes:
+        :param @id: Id to populate the database.
+        :param @name: This name must be unique to identify the Agent.
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<Agent {self.name}>"
 
 
 class Channel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=True)
     token = db.Column(EncryptedType(db.String, key), nullable=True)
+    agent_id = db.Column(db.Integer, db.ForeignKey('agent.id'),
+                         nullable=False)
+    agent = db.relationship('Agent', backref=db.backref('channels', lazy=True))
     social_network = db.Column(
         db.Enum(SocialNetwork),
         default=SocialNetwork.telegram,
@@ -46,7 +66,13 @@ def get_channel_id(token):
     return Channel.query.filter_by(token=token).first()
 
 
-def get_or_create_user_channel(user, channel):
+def get_user(user_id):
+    current_user = User.query.filter_by(id=user_id).first()
+    if current_user is not None:
+        return current_user
+
+
+def get_or_create_user(user, channel):
     new_user = User.query.filter_by(user_name=user["user_name"]).first()
     if new_user is None:
         new_user = User(
@@ -66,9 +92,12 @@ def init_database():
     """
     This function is used to initially populate the database
     """
-    exists = Channel.query.all()
+    exists = Agent.query.all()
     if exists is None or len(exists) == 0:
-        channel = Channel(name='t.me/telegramchannel', token="tokendeseguridad", social_network=SocialNetwork.telegram)
+        agent = Agent(name='opencampuscursos')
+        channel = Channel(name='t.me/telegramchannel', token="tokendeseguridad", social_network=SocialNetwork.telegram,
+                          agent=agent)
 
+        db.session.add(agent)
         db.session.add(channel)
         db.session.commit()

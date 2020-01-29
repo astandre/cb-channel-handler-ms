@@ -11,7 +11,7 @@ RUN pip install /app/
 
 WORKDIR /app/kbsbot/channel_handler
 
-ENV COMPOSE_ENGINE="http://127.0.0.1:5000"
+ENV COMPOSE_ENGINE="http://172.28.1.2:8000"
 ENV KEY="9WhoO2zEai7PveqOKEbatLobHCj45FLci6rtROxqpE4="
 
 EXPOSE 8005
