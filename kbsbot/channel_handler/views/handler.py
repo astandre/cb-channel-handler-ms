@@ -9,6 +9,18 @@ handler = JsonBlueprint('handler', __name__)
 
 @handler.route('/chat', methods=["POST"])
 def chat():
+    """
+    This view is used by the channel to authenticate and communicate with the compose engine.
+    In order to retrieve an answer for the user.
+    This method requires a dict with the following information:
+
+    Args:
+        @param: token: Authentication token.
+
+        @param: user: A dict containing the user_name, name, last_name and if exists social_network_id
+
+        @param: input: A dict containing the input of the user: user_input (Raw input of the user), a context dict containing: An intent if exists and a list of entities if exists.
+    """
     data = request.get_json()
     if "token" in data:
         channel = get_channel_id(data["token"])
@@ -35,7 +47,20 @@ def chat():
 
 @handler.route('/thread/last', methods=["GET"])
 def user_last_thread():
+    """
+    This view returns a list of the last interactions of the user in a selected network.
+    The list if ordered in an ascending way.
+    Starting from the last parent interaction.
+
+    Args:
+        @param: user: This view requires an id of a user.
+
+    """
     data = request.get_json()
-    user = get_user(data["user"])
-    last_inter = get_last_thread(user)
-    return {"interactions": last_inter, "user": user.id, "channel": user.channel.id, "agent": user.channel.agent.name}
+    if "user" in data:
+        user = get_user(data["user"])
+        last_inter = get_last_thread(user)
+        return {"interactions": last_inter, "user": user.id, "channel": user.channel.id,
+                "agent": user.channel.agent.name}
+    else:
+        return {"message": "Must provide a valid user id"}

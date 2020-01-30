@@ -20,6 +20,19 @@ def get_all_user_inputs(user_id):
 
 
 def create_entry(user, entry):
+    """
+    This method creates an entry in the conversation thread between the user and the chatbot.
+    The id of the current channel is also stored.
+
+    Parameters:
+        :param user: The user object containing all the information of the user.
+
+        :param entry: The current entry of the conversation, the input context is also stored.
+
+    Return:
+        The id of the current interaction stored.
+
+      """
     today = datetime.now()
     new_entry = {
         "user": user.id,
@@ -53,10 +66,25 @@ def create_entry(user, entry):
 
 
 def update_entry(entry_id, output):
+    """
+    This method updates the output of the current conversation thread.
+
+     Parameters:
+
+        :param entry_id: The id of the message.
+
+        :param output: The output context of the interaction.
+    """
     interactions.update_one({'_id': ObjectId(entry_id)}, {'$push': {"output": output}})
 
 
 def get_last_thread(user):
+    """
+     Parameters:
+
+        :param user: The user object containing all the information of the user.
+
+    """
     last_interactions_list = []
     try:
         last_parent_interaction = \
