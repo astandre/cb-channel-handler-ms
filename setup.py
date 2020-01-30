@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 from kbsbot.channel_handler import __version__
 
 setup(name='channel_handler',
-      description="",
+      description="This microservice is used to authenticate the different channels used to communicate with the chatbot.",
       long_description=open('README.rst').read(),
       version=__version__,
       packages=find_packages(),

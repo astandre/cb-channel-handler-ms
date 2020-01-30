@@ -7,6 +7,11 @@ Channel Handler
     :target: https://cb-channel-handler-ms.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+
+This microservice is used to authenticate the different channels used to communicate with the chatbot.
+This microservice also communicates with the compose-engine-ms in order to retrieve the answer for the user.
+Finally this microservice also stores the different users that communicate with the chatbot and the interactions between them.
+
 This project is part of the architecture described in:
 Herrera, Andre & Yaguachi, Lady & Piedra, Nelson. (2019). Building Conversational Interface for Customer Support Applied to Open Campus an Open Online Course Provider. 11-13. 10.1109/ICALT.2019.00011.
 
