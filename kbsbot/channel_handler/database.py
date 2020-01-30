@@ -159,7 +159,9 @@ def init_database():
         agent = Agent(name='opencampuscursos')
         channel = Channel(name='t.me/telegramchannel', token="tokendeseguridad", social_network=SocialNetwork.telegram,
                           agent=agent)
-
+        channel2 = Channel(name='unrealChannel', token="unrealsaraguro123", social_network=SocialNetwork.other,
+                           agent=agent)
         db.session.add(agent)
         db.session.add(channel)
+        db.session.add(channel2)
         db.session.commit()
