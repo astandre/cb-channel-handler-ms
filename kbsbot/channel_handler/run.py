@@ -1,6 +1,6 @@
 from kbsbot.channel_handler.app import create_app
 from kbsbot.channel_handler.database import db, init_database
-
+import os
 
 def main():
     app = create_app()

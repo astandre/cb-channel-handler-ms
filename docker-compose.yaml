@@ -73,9 +73,9 @@ services:
     depends_on:
       - mongodb-interactions
       - compose-engine
-      links:
-        - mongodb-interactions
-        - compose-engine
+    links:
+      - mongodb-interactions
+      - compose-engine
     networks:
       kbsbot-net:
         ipv4_address: 172.28.1.5
