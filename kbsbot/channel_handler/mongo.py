@@ -75,7 +75,7 @@ def update_entry(entry_id, output):
 
         :param output: The output context of the interaction.
     """
-    interactions.update_one({'_id': ObjectId(entry_id)}, {'$push': {"output": output}})
+    interactions.update({'_id': ObjectId(entry_id)}, {'$set': {"output": output}})
 
 
 def get_last_thread(user):
