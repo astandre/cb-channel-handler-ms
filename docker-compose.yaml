@@ -80,6 +80,22 @@ services:
       kbsbot-net:
         ipv4_address: 172.28.1.5
 
+  context-management:
+    restart: always
+    image: astandre/kbsbot_context_management
+    container_name: kbsbot_context_management
+    environment:
+      - CHANNEL_HANDLER=http://172.28.1.5:8005
+    ports:
+      - "5006:8006"
+    depends_on:
+      - channel-handler
+    links:
+      - channel-handler
+    networks:
+      kbsbot-net:
+        ipv4_address: 172.28.1.6
+
       # ###############################################################
       # #                         DATABASES                           #
       # ###############################################################
