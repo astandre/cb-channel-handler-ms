@@ -100,6 +100,6 @@ def get_last_thread(user):
                 del inter["parent"]
             last_interactions_list.append(inter)
         return last_interactions_list
-    except IndexError:
-        print("No records found")
+    except Exception as e:
+        print("No records found", e)
         return last_interactions_list
