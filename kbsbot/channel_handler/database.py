@@ -26,9 +26,12 @@ class Agent(db.Model):
         :param @id: Id to populate the database.
 
         :param @name: This name must be unique to identify the Agent.
+
+        :param @about: A description of the purpose of the chatbot.
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    about = db.Column(db.String(140), nullable=False)
 
     def __repr__(self):
         return f"<Agent {self.name}>"
@@ -157,11 +160,10 @@ def init_database():
     exists = Agent.query.all()
     if exists is None or len(exists) == 0:
         agent = Agent(name='opencampuscursos')
-        channel = Channel(name='t.me/telegramchannel', token="tokendeseguridad", social_network=SocialNetwork.telegram,
+        channel = Channel(name='@OCCChatbot', token="tokendeseguridad",
+                          about="Este es el chabot de Open Campus capaz de resolver dudas sobre los diferentes cursos de la oferta actual de Open Campus",
+                          social_network=SocialNetwork.telegram,
                           agent=agent)
-        channel2 = Channel(name='unrealChannel', token="unrealsaraguro123", social_network=SocialNetwork.other,
-                           agent=agent)
         db.session.add(agent)
         db.session.add(channel)
-        db.session.add(channel2)
         db.session.commit()

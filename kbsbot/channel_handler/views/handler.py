@@ -40,7 +40,28 @@ def chat():
             output = compose(compose_data)
             update_entry(entry, output)
             return output
+        else:
+            return {"message": "token is no correct", "status": False}
+    else:
         return {"message": "token is no correct", "status": False}
+
+
+@handler.route('/about/agent', methods=["GET"])
+def get_about_agent():
+    """
+    This method returns general information of the agent, like the name and the about.
+    Args:
+        @param: token: Authentication token.
+
+    """
+    data = request.get_json()
+    if "token" in data:
+        channel = get_channel_id(data["token"])
+        if channel is not None:
+            agent = channel.agent
+            return {"about": agent.about, "name": agent.name}
+        else:
+            return {"message": "token is no correct", "status": False}
     else:
         return {"message": "token is no correct", "status": False}
 
