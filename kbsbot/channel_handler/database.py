@@ -159,7 +159,7 @@ def init_database():
     """
     exists = Agent.query.all()
     if exists is None or len(exists) == 0:
-        agent = Agent(name='opencampuscursos',
+        agent = Agent(name='OpenCampus',
                       about="Este es el chabot de Open Campus capaz de resolver dudas sobre los diferentes cursos de la oferta actual de Open Campus", )
         channel = Channel(name='@OCCChatbot', token="tokendeseguridad",
                           social_network=SocialNetwork.telegram,
