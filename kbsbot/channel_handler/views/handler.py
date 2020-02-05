@@ -37,6 +37,8 @@ def chat():
                 "context": data["input"]["context"]
 
             }
+            if "help" in data["input"] and data["input"]["help"] is True:
+                compose_data["help"] = True
             output = compose(compose_data)
             update_entry(entry, output)
             return output
