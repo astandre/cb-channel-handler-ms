@@ -78,9 +78,8 @@ def update_entry(entry_id, output):
     interactions.update({'_id': ObjectId(entry_id)}, {'$set': {"output": output}})
 
 
-
 def get_interactions(agent):
-    result = interactions.find({"agent": agent.id})
+    result = interactions.find({"agent": agent.name})
     for res in result:
         print(res)
     return []

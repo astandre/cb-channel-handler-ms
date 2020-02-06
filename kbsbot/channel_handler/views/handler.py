@@ -88,7 +88,7 @@ def all_threads():
     data = request.get_json()
     logger.info(">>>>> Incoming data  %s", data)
     if "agent" in data:
-        agent = get_agent(data["user"])
+        agent = get_agent(data["agent"])
         get_interactions(agent)
         output = {
             "agent": agent.name
