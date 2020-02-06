@@ -3,8 +3,14 @@ from flask import request
 from kbsbot.channel_handler.mongo import *
 from kbsbot.channel_handler.database import *
 from kbsbot.channel_handler.services import *
+import logging
 
 handler = JsonBlueprint('handler', __name__)
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 
 @handler.route('/chat', methods=["POST"])
@@ -22,6 +28,7 @@ def chat():
         @param: input: A dict containing the input of the user: user_input (Raw input of the user), a context dict containing: An intent if exists and a list of entities if exists.
     """
     data = request.get_json()
+    logger.info(">>>>> Incoming data  %s", data)
     if "token" in data:
         channel = get_channel_id(data["token"])
         agent = channel.agent.name
@@ -41,6 +48,7 @@ def chat():
                 compose_data["help"] = True
             output = compose(compose_data)
             update_entry(entry, output)
+            logger.info("<<<<< Output  %s", data)
             return output
         else:
             return {"message": "token is no correct", "status": False}
@@ -80,10 +88,13 @@ def user_last_thread():
 
     """
     data = request.get_json()
+    logger.info(">>>>> Incoming data  %s", data)
     if "user" in data:
         user = get_user(data["user"])
         last_inter = get_last_thread(user)
-        return {"interactions": last_inter, "user": user.id, "channel": user.channel.id,
-                "agent": user.channel.agent.name}
+        output = {"interactions": last_inter, "user": user.id, "channel": user.channel.id,
+                  "agent": user.channel.agent.name}
+        logger.info("<<<<< Output  %s", output)
+        return output
     else:
         return {"message": "Must provide a valid user id"}

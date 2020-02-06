@@ -32,9 +32,15 @@ services:
     environment:
       - NLP_ENGINE_URL=http://172.28.1.3:8001
       - INTENTS_MANAGMENT_URL=http://172.28.1.4:8002
-      - CONTEXT_MANAGMENT_URL=http://0.0.0.0:8003
+      - CONTEXT_MANAGMENT_URL=http://172.28.1.6:8006
     ports:
       - "5000:8000"
+    depends_on:
+      - nlp-engine
+      - intents-managment
+    links:
+      - nlp-engine
+      - intents-managment
     networks:
       kbsbot-net:
         ipv4_address: 172.28.1.2
@@ -72,7 +78,6 @@ services:
       - "5005:8005"
     depends_on:
       - mongodb-interactions
-      - compose-engine
     links:
       - mongodb-interactions
       - compose-engine
@@ -106,7 +111,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongodb-interactions:/data/db/client
+      - mongodb-interactions:/data/db/interactions
     networks:
       - kbsbot-net
 

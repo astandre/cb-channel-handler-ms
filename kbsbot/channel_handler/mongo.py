@@ -99,7 +99,19 @@ def get_last_thread(user):
             if "parent" in inter:
                 del inter["parent"]
             last_interactions_list.append(inter)
-        return last_interactions_list
     except Exception as e:
         print("No records found", e)
-        return last_interactions_list
+
+    return last_interactions_list
+
+
+def get_interactions(agent):
+    result = interactions.find({"agent": agent.id})
+    for res in result:
+        print(res)
+
+
+def get_unclassified_inter(agent):
+    result = interactions.find({"agent": agent.id, "context": {"classified": False}})
+    for res in result:
+        print(res)
