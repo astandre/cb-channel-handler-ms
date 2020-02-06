@@ -38,7 +38,7 @@ def chat():
             entry = create_entry(user, data["input"])
             compose_data = {
                 "agent": agent,
-                "user": user.id,
+                "user": user,
                 "channel": channel.id,
                 "user_input": data["input"]["user_input"],
                 "context": data["input"]["context"]

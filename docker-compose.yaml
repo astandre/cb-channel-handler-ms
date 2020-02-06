@@ -95,8 +95,10 @@ services:
       - "5006:8006"
     depends_on:
       - channel-handler
+      - mongodb-interactions
     links:
       - channel-handler
+      - mongodb-interactions
     networks:
       kbsbot-net:
         ipv4_address: 172.28.1.6
