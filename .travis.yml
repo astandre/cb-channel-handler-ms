@@ -15,6 +15,5 @@ jobs:
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t kbsbot_channel_handler . -f docker/Dockerfile
-        - docker images
         - docker tag kbsbot_channel_handler $DOCKER_USERNAME/kbsbot_channel_handler
         - docker push $DOCKER_USERNAME/kbsbot_channel_handler

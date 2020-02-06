@@ -76,24 +76,23 @@ def get_about_agent():
         return {"message": "token is no correct", "status": False}
 
 
-@handler.route('/thread/last', methods=["GET"])
-def user_last_thread():
+@handler.route('/thread/all', methods=["GET"])
+def all_threads():
     """
-    This view returns a list of the last interactions of the user in a selected network.
-    The list if ordered in an ascending way.
-    Starting from the last parent interaction.
+    This view returns a list of all  interactions of an agent .
 
     Args:
-        @param: user: This view requires an id of a user.
+        @param: agent: This view requires an agent name.
 
     """
     data = request.get_json()
     logger.info(">>>>> Incoming data  %s", data)
-    if "user" in data:
-        user = get_user(data["user"])
-        last_inter = get_last_thread(user)
-        output = {"interactions": last_inter, "user": user.id, "channel": user.channel.id,
-                  "agent": user.channel.agent.name}
+    if "agent" in data:
+        agent = get_agent(data["user"])
+        get_interactions(agent)
+        output = {
+            "agent": agent.name
+        }
         logger.info("<<<<< Output  %s", output)
         return output
     else:

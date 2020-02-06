@@ -114,6 +114,21 @@ def get_channel_id(token):
     return Channel.query.filter_by(token=token).first()
 
 
+def get_agent(agent_name):
+    """
+    This methods finds the agent object by filtering by its name
+
+     Parameters:
+        :param agent_name: The name of the agent.
+
+      Return:
+        The agent object object if found.
+    """
+    current_agent = Agent.query.filter_by(name=agent_name).first()
+    if current_agent is not None:
+        return current_agent
+
+
 def get_user(user_id):
     """
     This methods finds the user object by filtering by its id.

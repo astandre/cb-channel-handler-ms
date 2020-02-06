@@ -90,7 +90,7 @@ services:
     image: astandre/kbsbot_context_management
     container_name: kbsbot_context_management
     environment:
-      - CHANNEL_HANDLER=http://172.28.1.5:8005
+      - MONGO_HOST=mongodb-interactions
     ports:
       - "5006:8006"
     depends_on:
