@@ -38,7 +38,7 @@ def chat():
             entry = create_entry(user, data["input"])
             compose_data = {
                 "agent": agent,
-                "user": user,
+                "user": {"id": user.id},
                 "channel": channel.id,
                 "user_input": data["input"]["user_input"],
                 "context": data["input"]["context"]
@@ -89,10 +89,13 @@ def all_threads():
     logger.info(">>>>> Incoming data  %s", data)
     if "agent" in data:
         agent = get_agent(data["agent"])
-        get_interactions(agent)
+        result = get_interactions(agent)
         output = {
             "agent": agent.name
         }
+
+        for res in result:
+            logger.info("res %s", res)
         logger.info("<<<<< Output  %s", output)
         return output
     else:

@@ -82,7 +82,7 @@ def get_interactions(agent):
     result = interactions.find({"agent": agent.name})
     for res in result:
         print(res)
-    return []
+    return result
 
 
 def get_unclassified_inter(agent):
