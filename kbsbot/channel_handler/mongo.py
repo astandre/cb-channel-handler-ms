@@ -19,7 +19,7 @@ def get_all_user_inputs(user_id):
         print(aux)
 
 
-def create_entry(user, entry):
+def create_entry(user, entry, agent):
     """
     This method creates an entry in the conversation thread between the user and the chatbot.
     The id of the current channel is also stored.
@@ -29,12 +29,15 @@ def create_entry(user, entry):
 
         :param entry: The current entry of the conversation, the input context is also stored.
 
+        :param agent: The agent name of the conversation.
+
     Return:
         The id of the current interaction stored.
 
       """
     today = datetime.now()
     new_entry = {
+        "agent": agent,
         "user": user.id,
         "social_network": user.channel_id,
         "input": entry

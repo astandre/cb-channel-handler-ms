@@ -35,7 +35,7 @@ def chat():
         if channel is not None:
             user = get_or_create_user(data["user"], channel)
 
-            entry = create_entry(user, data["input"])
+            entry = create_entry(user, data["input"],agent)
             compose_data = {
                 "agent": agent,
                 "user": {"id": user.id},
