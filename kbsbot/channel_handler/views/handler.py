@@ -35,7 +35,7 @@ def chat():
         if channel is not None:
             user = get_or_create_user(data["user"], channel)
 
-            entry = create_entry(user, data["input"],agent)
+            entry = create_entry(user, data["input"], agent)
             compose_data = {
                 "agent": agent,
                 "user": {"id": user.id},
@@ -74,29 +74,3 @@ def get_about_agent():
             return {"message": "token is no correct", "status": False}
     else:
         return {"message": "token is no correct", "status": False}
-
-
-@handler.route('/thread/all', methods=["GET"])
-def all_threads():
-    """
-    This view returns a list of all  interactions of an agent .
-
-    Args:
-        @param: agent: This view requires an agent name.
-
-    """
-    data = request.get_json()
-    logger.info(">>>>> Incoming data  %s", data)
-    if "agent" in data:
-        agent = get_agent(data["agent"])
-        result = get_interactions(agent)
-        output = {
-            "agent": agent.name
-        }
-
-        for res in result:
-            logger.info("res %s", res)
-        logger.info("<<<<< Output  %s", output)
-        return output
-    else:
-        return {"message": "Must provide a valid user id"}

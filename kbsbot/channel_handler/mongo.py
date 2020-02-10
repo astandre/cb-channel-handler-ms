@@ -79,16 +79,3 @@ def update_entry(entry_id, output):
         :param output: The output context of the interaction.
     """
     interactions.update({'_id': ObjectId(entry_id)}, {'$set': {"output": output}})
-
-
-def get_interactions(agent):
-    result = interactions.find({"agent": agent.name})
-    for res in result:
-        print(res)
-    return result
-
-
-def get_unclassified_inter(agent):
-    result = interactions.find({"agent": agent.id, "context": {"classified": False}})
-    for res in result:
-        print(res)
