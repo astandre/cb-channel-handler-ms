@@ -103,9 +103,25 @@ services:
       kbsbot-net:
         ipv4_address: 172.28.1.6
 
-      # ###############################################################
-      # #                         DATABASES                           #
-      # ###############################################################
+  training-tool:
+    restart: always
+    image: astandre/kbsbot_training_tool
+    container_name: kbsbot_training_tool
+    environment:
+      - MONGO_HOST=mongodb-interactions
+    ports:
+      - "5007:8007"
+    depends_on:
+      - mongodb-interactions
+    links:
+      - mongodb-interactions
+    networks:
+      kbsbot-net:
+        ipv4_address: 172.28.1.7
+
+    # ###############################################################
+    # #                         DATABASES                           #
+    # ###############################################################
   mongodb-interactions:
     image: 'mongo'
     container_name: mongodb-interactions
@@ -117,5 +133,16 @@ services:
     networks:
       - kbsbot-net
 
-
-
+      # ###############################################################
+      # #                         CHANNELS                           #
+      # ###############################################################
+#  oc-telegram-channel:
+#    restart: always
+#    image: astandre/kbsbot_telegram_channel
+#    container_name: kbsbot_telegram_channel
+#    environment:
+#      - BASE_URL=http://172.28.1.2:8005
+#      - CONNECTION_KEY=tokendeseguridad
+#      - API_KEY=telegram_api_key
+#    networks:
+#      kbsbot-net
