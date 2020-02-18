@@ -88,7 +88,7 @@ class User(db.Model):
         :param @channel: The channel object where the user is interacting.
     """
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(80), unique=True, nullable=False)
+    user_name = db.Column(db.String(80), unique=True, nullable=True)
     name = db.Column(db.String(80), nullable=True)
     last_name = db.Column(db.String(80), nullable=True)
     social_network_id = db.Column(db.Integer, nullable=True)
@@ -153,18 +153,29 @@ def get_or_create_user(user, channel):
 
         :param channel: A channel object used by the user to communicate with the system.
     """
-    new_user = User.query.filter_by(user_name=user["user_name"]).first()
-    if new_user is None:
-        new_user = User(
-            user_name=user["user_name"],
-            name=user["name"],
-            last_name=user["last_name"],
-            channel=channel)
-        if "social_network_id" in user:
-            new_user.social_network_id = user["social_network_id"]
+    new_user = User()
+    if user["user_name"] is not None:
+        new_user = User.query.filter_by(user_name=user["user_name"]).first()
+        if new_user is None:
+            if new_user is None:
+                new_user = User(
+                    user_name=user["user_name"],
+                    name=user["name"],
+                    last_name=user["last_name"],
+                    channel=channel)
+    else:
+        if new_user is None:
+            new_user = User(
+                name=user["name"],
+                last_name=user["last_name"],
+                channel=channel)
 
-        db.session.add(new_user)
-        db.session.commit()
+    if "social_network_id" in user:
+        new_user.social_network_id = user["social_network_id"]
+
+    db.session.add(new_user)
+    db.session.commit()
+
     return new_user
 
 
