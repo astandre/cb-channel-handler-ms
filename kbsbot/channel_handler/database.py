@@ -153,25 +153,25 @@ def get_or_create_user(user, channel):
 
         :param channel: A channel object used by the user to communicate with the system.
     """
-    if user["user_name"] is not None:
+    if "user_name" in user and user["user_name"] is not None:
         new_user = User.query.filter_by(user_name=user["user_name"]).first()
-        if new_user is None:
-            new_user = User(
-                user_name=user["user_name"],
-                name=user["name"],
-                last_name=user["last_name"],
-                channel=channel)
+    elif "social_network_id" in user and user["social_network_id"] is not None:
+        new_user = User.query.filter_by(social_network_id=user["social_network_id"]).first()
     else:
+        new_user = None
+
+    if new_user is None:
         new_user = User(
+            user_name=user["user_name"],
             name=user["name"],
             last_name=user["last_name"],
             channel=channel)
 
-    if "social_network_id" in user:
-        new_user.social_network_id = user["social_network_id"]
+        if "social_network_id" in user:
+            new_user.social_network_id = user["social_network_id"]
 
-    db.session.add(new_user)
-    db.session.commit()
+        db.session.add(new_user)
+        db.session.commit()
 
     return new_user
 

@@ -39,7 +39,6 @@ def chat():
         agent = channel.agent.name
         if channel is not None:
             user = get_or_create_user(data["user"], channel)
-
             entry = create_entry(user, data["input"], agent)
             compose_data = {
                 "agent": agent,
@@ -47,13 +46,12 @@ def chat():
                 "channel": channel.id,
                 "user_input": data["input"]["user_input"],
                 "context": data["input"]["context"]
-
             }
             if "help" in data["input"] and data["input"]["help"] is True:
                 compose_data["help"] = True
             output = compose(compose_data)
             update_entry(entry, output)
-            logger.info("<<<<< Output  %s", data)
+            logger.info("<<<<< Output  %s", output)
             return output
         else:
             return {"message": "token is no correct", "status": False}
