@@ -8,4 +8,3 @@ Here we have the different views of the app.
 
 .. autofunction:: views.handler.get_about_agent
 
-.. autofunction:: views.handler.all_threads

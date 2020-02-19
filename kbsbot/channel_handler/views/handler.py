@@ -63,9 +63,9 @@ def chat():
 def get_about_agent():
     """
     This method returns general information of the agent, like the name and the about.
+
     Args:
         @param: token: Authentication token.
-
     """
     data = request.get_json()
     if "token" in data:
