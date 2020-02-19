@@ -39,7 +39,8 @@ def chat():
         agent = channel.agent.name
         if channel is not None:
             user = get_or_create_user(data["user"], channel)
-            entry = create_entry(user, data["input"], agent)
+            if len(data["input"]) > 0:
+                entry = create_entry(user, data["input"], agent)
             compose_data = {
                 "agent": agent,
                 "user": {"id": user.id},
@@ -50,7 +51,8 @@ def chat():
             if "help" in data["input"] and data["input"]["help"] is True:
                 compose_data["help"] = True
             output = compose(compose_data)
-            update_entry(entry, output)
+            if len(data["input"]) > 0:
+                update_entry(entry, output)
             logger.info("<<<<< Output  %s", output)
             return output
         else:
